@@ -59,3 +59,9 @@ And show the article in your view:
   %h1= @article.name
   .content= @article.content
 ```
+
+## Contributing
+
+You can contribute by making a GitHub pull request. Please include tests
+with your feature/bug fix and an ample description as to why you're
+fixing the bug.
