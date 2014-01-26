@@ -1,6 +1,9 @@
 class CopyGenerator < ::Rails::Generators::NamedBase
   source_root File.expand_path("../templates", __FILE__)
   desc "Creates a new ActiveCopy model"
+  class_option :datestamp, \
+    desc: "Add a date stamp to the beginnings of file names.",
+    default: false
 
   def model_class
     template "app/models/#{file_name}.rb", 'model.rb.erb'
@@ -12,7 +15,8 @@ class CopyGenerator < ::Rails::Generators::NamedBase
 
   def model_generator
     template "#{generator_dir}/#{file_name}_generator.rb", 'generator.rb.erb'
-    template "#{generator_dir}/templates/#{file_name}.rb.erb", 'view.md.erb'
+    template "#{generator_dir}/templates/view.md.erb", 'view.md.erb'
+    template "#{generator_dir}/USAGE", "USAGE.erb"
   end
 
   private

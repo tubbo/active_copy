@@ -1,0 +1,14 @@
+Description:
+    Generates a new ActiveCopy model for use in this project. Specify
+    attributes that the model will use in the arguments following the
+    first.
+
+Example:
+    rails generate copy article name title tags category date
+
+    This will create:
+        app/models/article.rb
+        spec/models/article_spec.rb
+        lib/generators/article/article_generator.rb
+        lib/generators/article/templates/view.md.erb
+        lib/generators/article/USAGE

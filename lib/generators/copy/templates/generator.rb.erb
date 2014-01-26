@@ -12,15 +12,23 @@ class <%= model_name %>Generator < ::Rails::Generators::NamedBase
   end
 
   def title
-    @title ||= file_name.titleize.downcase
+    @title ||= param_name.titleize.downcase
   end
 
   def table_name
     human_name.tableize
   end
 
-  def file_name
+  def param_name
     human_name.parameterize
+  end
+
+  def file_name
+  <% if datestamped? %>
+    "#{date}-#{param_name}"
+  <% else %>
+    param_name
+  <% end %>
   end
 
   def attributes_yaml

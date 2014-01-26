@@ -1,0 +1,13 @@
+Description:
+    Add a description for your ActiveCopy model generator here.
+
+Example:
+    rails generate copy <%= file_name %>
+
+<% if datestamped? %>
+    This will create:
+        app/views/<%= table_name %>/content/2000-01-01-name.md
+<% else %>
+    This will create:
+        app/views/<%= table_name %>/content/name.md
+<% end %>
