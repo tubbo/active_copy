@@ -23,11 +23,10 @@ module ActiveCopy
       Dir["#{absolute_collection_path}/*.md"].reduce([]) do |articles, md_path|
         unless md_path == "#{Rails.root}/#{collection_path}"
           file_name = File.basename(md_path).gsub('.md', '')
-          articles << self.new(file_name)
+          articles << self.new(id: file_name)
         end
       end
     end
-
 
     # Look for all of the matching key/value pairs in the YAML front
     # matter, and return an array of models that match them.

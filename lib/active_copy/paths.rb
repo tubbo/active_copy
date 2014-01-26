@@ -39,10 +39,16 @@ module ActiveCopy
     # Return absolute path to Markdown file on this machine.
     def source_path options={}
       @source_path ||= if options[:relative]
-        File.join collection_path, "#{id}.md"
+        File.join collection_path, "#{self.id}.md"
       else
-        File.join Rails.root, collection_path, "#{id}.md"
+        File.join root_path, collection_path, "#{self.id}.md"
       end
+    end
+
+    private
+    def root_path
+      return Rails.root if defined? Rails
+      File.expand_path "../../", __FILE__
     end
   end
 end

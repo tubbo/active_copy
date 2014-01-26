@@ -7,25 +7,16 @@ require 'active_copy/paths'
 module ActiveCopy
   class Base
     include ActiveModel::Model,
+            ActiveModel::Callbacks,
             ActiveCopy::Attributes,
             ActiveCopy::Paths
     extend ActiveCopy::Finders
 
-    attr_reader :attributes, :id, :collection_path
+    attr_accessor :id
 
-    # Instantiate using the filename as an ID, set the YAML front matter
-    # to a Hash called +attributes+, and define a reader method for each 
-    # attribute that has a corresponding key in the +attr_accessible+
-    # definition for this model.
-    def initialize with_filename=nil, options=nil
-      @attributes = options || yaml_front_matter
-      @id = if with_filename.blank?
-        options[:filename]
-      else
-        with_filename
-      end
-
-      define_attributes_as_methods!
+    # Take YAML front matter given by id.
+    def attributes
+      @attributes ||= yaml_front_matter.with_indifferent_access
     end
 
     # Test if the source file is present on this machine.
@@ -50,17 +41,27 @@ module ActiveCopy
       attributes[:tags].split(',').map(&:strip)
     end
 
-    ## NOTE: The following two methods are necessary for mocking
-
-    alias new create
-    def persisted?
-      true
+    class << self
+      # New and create are the same thing, here.
+      alias create new
     end
 
-  private
+    # Files are persisted when they are present on disk.
+    alias persisted? present?
+
+    def method_missing method, *arguments
+      super method, *arguments unless attribute? "#{method}"
+      attributes[method]
+    end
+
+    private
     def yaml_front_matter
       HashWithIndifferentAccess.new \
         YAML::load(raw_source.split("---\n")[1])
+    end
+
+    def attribute? key
+      attributes.keys.include? key
     end
 
     def matches? query
@@ -72,18 +73,6 @@ module ActiveCopy
           attributes[key] == value
         end
       end
-    end
-
-    def define_attributes_as_methods!
-      accessible_attrs.each do |attribute|
-        class_eval do
-          define_method(attribute) { attributes[attribute] }
-        end
-      end
-    end
-
-    def accessible_attrs
-      self._accessible_attributes
     end
   end
 end

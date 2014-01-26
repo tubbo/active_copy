@@ -17,7 +17,7 @@ module ActiveCopy
     module ClassMethods
       def attr_accessible(*args)
         if self._accessible_attributes.nil?
-          self._accessible_attributes = [] 
+          self._accessible_attributes = []
         end
 
         args.each do |attribute|
@@ -30,11 +30,8 @@ module ActiveCopy
       end
 
       def accessible_attrs
-        if self._accessible_attributes.nil?
-          DEFAULT_ATTRS
-        else
-          self._accessible_attributes.merge DEFAULT_ATTRS
-        end
+        return DEFAULT_ATTRS if self._accessible_attributes.nil?
+        self._accessible_attributes.merge DEFAULT_ATTRS
       end
 
       def deployment_path
