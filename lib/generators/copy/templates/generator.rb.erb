@@ -1,0 +1,31 @@
+class <%= model_name %>Generator < ::Rails::Generators::NamedBase
+  source_root File.expand_path("../templates", __FILE__)
+  desc "Creates a new <%= model_name %>"
+
+  def generate_view
+    template "app/views/#{directory}/content/#{file_name}.md", 'view.md.erb'
+  end
+
+  private
+  def date
+    @date_string ||= Time.now.strftime '%Y-%m-%d'
+  end
+
+  def title
+    @title ||= file_name.titleize.downcase
+  end
+
+  def table_name
+    human_name.tableize
+  end
+
+  def file_name
+    human_name.parameterize
+  end
+
+  def attributes_yaml
+    attributes.reduce "" do |yaml, key|
+      yaml << "#{key}: \n"
+    end
+  end
+nd
