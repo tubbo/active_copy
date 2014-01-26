@@ -7,6 +7,8 @@ of static page content inside app/views as YAML Front Matter/Markdown.
 Although it's still very much a work in progress, ActiveCopy is being
 used in production on <http://psychedeli.ca>.
 
+[![Build Status](https://travis-ci.org/tubbo/active_copy.png?branch=master)](https://travis-ci.org/tubbo/active_copy)
+
 ## Setup
 
 Add to Gemfile:
