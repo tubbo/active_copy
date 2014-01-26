@@ -2,47 +2,24 @@ require 'active_model'
 require 'active_copy/attributes'
 require 'active_copy/finders'
 require 'active_copy/paths'
+require 'active_copy/source'
 
 # Base class for an +ActiveCopy+ model.
+
 module ActiveCopy
   class Base
-    include ActiveModel::Model,
-            ActiveModel::Callbacks,
-            ActiveCopy::Attributes,
-            ActiveCopy::Paths
-    extend ActiveCopy::Finders
+    include ActiveModel::Model
+    include Attributes, Finders, Paths, Source
 
     attr_accessor :id
 
-    # Take YAML front matter given by id.
-    def attributes
-      @attributes ||= yaml_front_matter.with_indifferent_access
-    end
-
-    # Test if the source file is present on this machine.
-    def present?
-      File.exists? source_path
-    end
-
-    # Return the raw String source of the Markdown document, including
-    # the YAML front matter.
-    def raw_source
-      @raw ||= File.read source_path
-    end
-
-    # Return the String source of the Markdown document without the YAML
-    # front matter. This is what is passed into ActionView to render the
-    # Markdown from this file.
-    def source
-      @source ||= raw_source.split("---\n")[2]
-    end
-
+    # Serialize comma-separated tags to an array.
     def tags
       attributes[:tags].split(',').map(&:strip)
     end
 
     class << self
-      # New and create are the same thing, here.
+      # New and create are the same thing.
       alias create new
     end
 
@@ -52,27 +29,6 @@ module ActiveCopy
     def method_missing method, *arguments
       super method, *arguments unless attribute? "#{method}"
       attributes[method]
-    end
-
-    private
-    def yaml_front_matter
-      HashWithIndifferentAccess.new \
-        YAML::load(raw_source.split("---\n")[1])
-    end
-
-    def attribute? key
-      attributes.keys.include? key
-    end
-
-    def matches? query
-      query.reduce(true) do |matches, (key, value)|
-        matches = if key == 'tag'
-          return false unless tags.present?
-          tags.include? value
-        else
-          attributes[key] == value
-        end
-      end
     end
   end
 end

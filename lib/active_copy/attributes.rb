@@ -31,12 +31,28 @@ module ActiveCopy
 
       def accessible_attrs
         return DEFAULT_ATTRS if self._accessible_attributes.nil?
-        self._accessible_attributes.merge DEFAULT_ATTRS
+        self._accessible_attributes += DEFAULT_ATTRS
       end
 
       def deployment_path
         self._deployment_path || "#{DEFAULT_PATH}/#{self.id}.html"
       end
+    end
+
+    # Take YAML front matter given by id.
+    def attributes
+      @attributes ||= yaml_front_matter.with_indifferent_access
+    end
+
+    protected
+    def attribute? key
+      self.class.accessible_attrs.include? key.to_sym
+    end
+
+    private
+    def yaml_front_matter
+      HashWithIndifferentAccess.new \
+        YAML::load(raw_source.split("---\n")[1])
     end
   end
 end
