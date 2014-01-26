@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    active_copy (0.0.1)
+    active_copy (1.0.0.pre)
       pygments.rb (~> 0.3)
       rails
       redcarpet
