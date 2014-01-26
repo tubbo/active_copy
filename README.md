@@ -1,7 +1,7 @@
 # ActiveCopy
 
 ActiveCopy is a Rails model layer for reading from static page files.
-Inspired by [Jekyll][jekyll], it hacks ActionView to allow for storage
+Inspired by [Jekyll](http://jekyllrb.com), it hacks ActionView to allow for storage
 of static page content inside app/views as YAML Front Matter/Markdown.
 
 Although it's still very much a work in progress, ActiveCopy is being
