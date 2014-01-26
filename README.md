@@ -4,7 +4,8 @@ ActiveCopy is a Rails model layer for reading from static page files.
 Inspired by [Jekyll][jekyll], it hacks ActionView to allow for storage
 of static page content inside app/views as YAML Front Matter/Markdown.
 
-Although it's still very much a work 
+Although it's still very much a work in progress, ActiveCopy is being
+used in production on <http://psychedeli.ca>.
 
 ## Setup
 
@@ -17,7 +18,7 @@ gem 'active_copy'
 And generate a model:
 
 ```bash
-$ rails generate active_copy article
+$ rails generate copy article
 ```
 
 You'll get this as **app/models/article.rb**:
@@ -27,6 +28,11 @@ class Article < ActiveCopy::Base
   attr_accessible :title
 end
 ```
+
+You'll also see a generator pop up in **lib/generators** that
+corresponds to the name you gave the original generator. The `copy`
+generator actually "generates a generator" so that you can more easily
+generate your custom model records (files).
 
 ## Usage
 
@@ -65,3 +71,7 @@ And show the article in your view:
 You can contribute by making a GitHub pull request. Please include tests
 with your feature/bug fix and an ample description as to why you're
 fixing the bug.
+
+### Roadmap
+
+- Generators
