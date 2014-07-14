@@ -1,0 +1,117 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>ActiveCopy by tubbo</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>ActiveCopy</h1>
+        <p>Jekyll on Rails</p>
+
+        <p class="view"><a href="https://github.com/tubbo/active_copy">View the Project on GitHub <small>tubbo/active_copy</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/tubbo/active_copy/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/tubbo/active_copy/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/tubbo/active_copy">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a name="activecopy" class="anchor" href="#activecopy"><span class="octicon octicon-link"></span></a>ActiveCopy</h1>
+
+<p>ActiveCopy is a Rails model layer for reading from static page files.
+Inspired by <a href="http://jekyllrb.com">Jekyll</a>, it hacks ActionView to allow for storage
+of static page content inside app/views as YAML Front Matter/Markdown.</p>
+
+<p><a href="https://travis-ci.org/tubbo/active_copy"><img src="https://travis-ci.org/tubbo/active_copy.png?branch=master" alt="Build Status"></a></p>
+
+<h2>
+<a name="setup" class="anchor" href="#setup"><span class="octicon octicon-link"></span></a>Setup</h2>
+
+<p>Add to Gemfile:</p>
+
+<div class="highlight highlight-ruby"><pre><span class="n">gem</span> <span class="s1">'active_copy'</span>
+</pre></div>
+
+<p>And generate a model:</p>
+
+<div class="highlight highlight-bash"><pre><span class="nv">$ </span>rails generate copy article
+</pre></div>
+
+<p>You'll get this as <strong>app/models/article.rb</strong>:</p>
+
+<div class="highlight highlight-ruby"><pre><span class="k">class</span> <span class="nc">Article</span> <span class="o">&lt;</span> <span class="no">ActiveCopy</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">attr_accessible</span> <span class="ss">:title</span>
+<span class="k">end</span>
+</pre></div>
+
+<p>You'll also see a generator pop up in <strong>lib/generators</strong> that
+corresponds to the name you gave the original generator. The <code>copy</code>
+generator actually "generates a generator" so that you can more easily
+generate your custom model records (files).</p>
+
+<h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>You can define articles in <strong>app/views/articles/content/your-article.md</strong>:</p>
+
+<pre lang="markdown"><code>---
+title: "The title of your article"
+---
+
+Hi I'm a static article.
+</code></pre>
+
+<p>Retrieve that article from a param in your route:</p>
+
+<div class="highlight highlight-ruby"><pre><span class="k">class</span> <span class="nc">ArticlesController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="k">def</span> <span class="nf">show</span>
+    <span class="vi">@article</span> <span class="o">=</span> <span class="no">Article</span><span class="o">.</span><span class="n">find</span> <span class="n">params</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span>
+
+    <span class="n">respond_with</span> <span class="vi">@article</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+
+<p>And show the article in your view:</p>
+
+<div class="highlight highlight-haml"><pre><span class="nf">#article</span>
+  <span class="nt">%h1</span><span class="p">=</span> <span class="vi">@article</span><span class="o">.</span><span class="n">name</span>
+  <span class="nc">.content</span><span class="p">=</span> <span class="vi">@article</span><span class="o">.</span><span class="n">content</span>
+</pre></div>
+
+<h2>
+<a name="contributing" class="anchor" href="#contributing"><span class="octicon octicon-link"></span></a>Contributing</h2>
+
+<p>You can contribute by making a GitHub pull request. Please include tests
+with your feature/bug fix and an ample description as to why you're
+fixing the bug.</p>
+
+<h3>
+<a name="roadmap" class="anchor" href="#roadmap"><span class="octicon octicon-link"></span></a>Roadmap</h3>
+
+<ul>
+<li>Generators</li>
+</ul>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/tubbo">tubbo</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
